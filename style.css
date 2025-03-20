@@ -1,0 +1,175 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: 0.5s all;
+    font-size: 2vmax;
+    outline: none;
+    text-align: center;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: #ced8ce;
+    user-select: none;
+}
+
+header,
+footer {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1% 0;
+}
+
+footer {
+    position: static;
+    bottom: 0;
+    background-color: rgb(27, 23, 23);
+}
+
+main {
+    width: 100%;
+    /* height: 100vh; */
+    display: grid;
+    grid-template-columns: repeat(2, 0.5fr);
+    grid-template-rows: 1fr;
+}
+
+.left_box,
+.right_box {
+    width: 100%;
+    /* min-height: 300px; */
+    padding: 2%;
+    border: 2px solid rgb(20, 20, 20);
+}
+
+.left_box {
+    min-height: 200px;
+}
+
+.left_box>.head {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+button {
+    font-size: 1.4vmax;
+    padding: 2.5%;
+    margin: 0 1%;
+    font-weight: bolder;
+    border-radius: 50px;
+    background: #4CAF50;
+    color: #ffffff;
+}
+
+button:hover {
+    color: #4CAF50;
+    background: #ffffff;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input,
+textarea {
+    border-radius: 50px;
+    text-indent: 3%;
+}
+
+input,
+button,
+textarea {
+    font-size: 1.4vmax;
+    border: 2px solid #41ff47;
+}
+
+.left_box>.head {
+    background: #979997;
+    padding: 2%;
+    border-radius: 50px;
+}
+
+.left_box>.body {
+    width: 100%;
+    min-height: 400px;
+    max-height: 400px;
+    margin: 2% 0;
+    overflow-y: auto;
+}
+
+.left_box>.body>span,
+.response>.allResponse>span,
+.right_box>.response>.displayQues {
+    display: block;
+    text-indent: 2%;
+    background: #666866;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin: 1% 0;
+}
+
+.right_box>.ques,
+.right_box>.response {
+    /* height: 400px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.right_box>.ques>h1 {
+    font-size: 2.2vmax;
+    margin: 5% 0;
+}
+
+.right_box .createques {
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.right_box input,
+.right_box textarea {
+    padding: 2.5% 0;
+    margin: 2.5%;
+}
+
+.response>.allResponse {
+    width: 100%;
+    min-height: 100px;
+    max-height: 100px;
+    margin: 2% 0;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 600px) {
+    main {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 0.5fr);
+    }
+
+    .left_box,
+    .right_box {
+        margin: 5% 0;
+    }
+
+    button {
+        border-radius: 20px;
+        font-size: 1.2vmax;
+    }
+
+    textarea,
+    input,
+    .head {
+        border-radius: 20px;
+    }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Discussion Portal</h1>
+    </header>
+    <main>
+        <section class="left_box">
+            <div class="head">
+                <button>New Question Form</button> <!--  button no.  0  -->
+                <input type="text" name="search" placeholder="Search by Subject"> <!--  input no.  0  -->
+            </div>
+            <div class="body"></div>
+        </section>
+        <section class="right_box">
+            <div class="ques" style="display: none;">
+                <h1>Welcome To Discussion Portal !</h1>
+                <p>Enter a subject and question to get started</p>
+                <div class="createques">
+                    <input type="text" name="subject" placeholder="Subject"> <!--  input no.  1  -->
+                    <textarea type="text" name="question" placeholder="Question"></textarea> <!--  textarea no.  0  -->
+                    <button>Submit</button> <!--  button no.  1  -->
+                </div>
+            </div>
+            <div class="response" style="display: none;">
+                <h1>Question</h1>
+                <div class="displayQues">
+                    <h1>Zoo</h1>
+                    <p>What is Zoo?</p>
+                </div>
+                <button>Resolve</button> <!--  button no.  2  -->
+                <h1>All Responses</h1>
+                <div class="allResponse">
+                    <!-- <h1 align="center"> -->
+                    <!-- <span>
+                            <h1>Zoo</h1>
+                            <p>What is Zoo?</p>
+                        </span>
+                        <span>
+                            <h1>Zoo</h1>
+                            <p>What is Zoo?</p>
+                        </span>
+                        <span>
+                            <h1>Zoo</h1>
+                            <p>What is Zoo?</p>
+                        </span>
+                        <span>
+                            <h1>Zoo</h1>
+                            <p>What is Zoo?</p>
+                        </span>
+                        <span>
+                            <h1>Zoo</h1>
+                            <p>What is Zoo?</p>
+                        </span> -->
+                    <!-- </h1> -->
+                </div>
+                <h1>Add Response</h1>
+                <div class="createques">
+                    <input type="text" name="uname" placeholder="Enter your name"> <!--  input no.  2  -->
+                    <textarea type="text" name="response" placeholder="Enter response"></textarea>
+                    <!--  textarea no.  1  -->
+                    <button>Submit</button> <!--  button no.  3  -->
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <h1>&#169;2025 - Reserved</h1>
+    </footer>
+</body>
+<script src="script.js"></script>
+
+</html>
