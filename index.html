@@ -15,8 +15,9 @@
     <main>
         <section class="left_box">
             <div class="head">
-                <button>New Question Form</button> <!--  button no.  0  -->
-                <input type="text" name="search" placeholder="Search by Subject"> <!--  input no.  0  -->
+                <button id="newFormButton">New Question Form</button>
+                <input type="text" class="searchField" name="search" placeholder="Search by Subject">
+                <button id="favButton"><img src="favourite.png" style="width:1.5vmax;" alt=""></button>
             </div>
             <div class="body"></div>
         </section>
@@ -25,9 +26,9 @@
                 <h1>Welcome To Discussion Portal !</h1>
                 <p>Enter a subject and question to get started</p>
                 <div class="createques">
-                    <input type="text" name="subject" placeholder="Subject"> <!--  input no.  1  -->
-                    <textarea type="text" name="question" placeholder="Question"></textarea> <!--  textarea no.  0  -->
-                    <button>Submit</button> <!--  button no.  1  -->
+                    <input type="text" class="subjectField" name="subject" placeholder="Subject">
+                    <textarea type="text" class="questionField" name="question" placeholder="Question"></textarea> 
+                    <button id="addQuestionButton">Submit</button>
                 </div>
             </div>
             <div class="response" style="display: none;">
@@ -36,38 +37,21 @@
                     <h1>Zoo</h1>
                     <p>What is Zoo?</p>
                 </div>
-                <button>Resolve</button> <!--  button no.  2  -->
-                <h1>All Responses</h1>
+                <button id="resolveButton">Resolve</button>
                 <div class="allResponse">
+                    <h1>All Responses</h1>
                     <!-- <h1 align="center"> -->
-                    <!-- <span>
-                            <h1>Zoo</h1>
-                            <p>What is Zoo?</p>
-                        </span>
-                        <span>
-                            <h1>Zoo</h1>
-                            <p>What is Zoo?</p>
-                        </span>
-                        <span>
-                            <h1>Zoo</h1>
-                            <p>What is Zoo?</p>
-                        </span>
-                        <span>
-                            <h1>Zoo</h1>
-                            <p>What is Zoo?</p>
-                        </span>
-                        <span>
-                            <h1>Zoo</h1>
-                            <p>What is Zoo?</p>
-                        </span> -->
-                    <!-- </h1> -->
+                    <!--    <span>
+                                <h1>Zoo</h1>
+                                <p>What is Zoo?</p>
+                            </span>
+                        </h1> -->
                 </div>
                 <h1>Add Response</h1>
                 <div class="createques">
-                    <input type="text" name="uname" placeholder="Enter your name"> <!--  input no.  2  -->
-                    <textarea type="text" name="response" placeholder="Enter response"></textarea>
-                    <!--  textarea no.  1  -->
-                    <button>Submit</button> <!--  button no.  3  -->
+                    <input type="text" class="userName" name="uname" placeholder="Enter your name">
+                    <textarea type="text" class="userResponse" name="response" placeholder="Enter response"></textarea>
+                    <button id="submitButton">Submit</button> <!--  button no.  3  -->
                 </div>
             </div>
         </section>
