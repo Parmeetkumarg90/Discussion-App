@@ -7,7 +7,7 @@
 // use id not values 51,107,283,293,305 - 👍
 // add timer to each question - 👍
 
-let AllData, questionFlag = false, favFlag = false, timerFlag, imgSrc = ["not favourite.png", "favourite.png"];
+let AllData, questionFlag = false, favFlag = false, timerFlag, favIcon = ["🩷", "🩶"];
 AllData = JSON.parse(localStorage.getItem('AllData')) || [];
 
 if (AllData != []) {
@@ -90,7 +90,7 @@ document.querySelector('.body').addEventListener('click', (event) => { // any qu
         AllData.forEach((item) => {
             if (item.id === spanID) {
                 item.favourite = !item.favourite;
-                event.target.src = imgSrc[item.favourite ? 1 : 0];
+                event.target.innerText = favIcon[item.favourite ? 1 : 0];
             }
         });
         localStorage.setItem('AllData', JSON.stringify(AllData));
@@ -233,20 +233,20 @@ function addResponse(obj) { // append new response
     div2.style.alignItems = "center";
 
     let like = document.createElement('div');
-    let likeImg = document.createElement('img');
+    let likeImg = document.createElement('p');
     const likeText = document.createTextNode(obj.like);
 
-    likeImg.src = 'like.png';
-    likeImg.style.width = '4vmax';
+    likeImg.innerText = '👍';
+    // likeImg.style.width = '4vmax';
     likeImg.style.padding = '0.5vmax';
     likeImg.id = 'like';
 
     let dislike = document.createElement('div');
-    let dislikeImg = document.createElement('img');
+    let dislikeImg = document.createElement('p');
     const dislikeText = document.createTextNode(obj.dislike);
 
-    dislikeImg.src = 'dislike.png';
-    dislikeImg.style.width = '4vmax';
+    dislikeImg.innerText = '👎';
+    // dislikeImg.style.width = '4vmax';
     dislikeImg.style.padding = '0.5vmax';
     dislikeImg.id = 'dislike';
 
@@ -274,7 +274,7 @@ function showFavQuestion() {
     if (favFlag) {
         questions.forEach(item => {
             // console.log(item.querySelector('img').src.includes('not'));
-            if (item.querySelector('img').src.includes('not')) {
+            if (item.querySelectorAll('p')[1].innerText.includes('🩶')) {
                 item.style.display = 'none';
             }
             else {
@@ -285,11 +285,104 @@ function showFavQuestion() {
     else {
         questions.forEach(item => {
             // console.log(item.querySelector('img').src.includes('not'));
-            if (item.querySelector('img').src.includes('not')) {
+            if (item.querySelectorAll('p')[1].innerText.includes('🩶')) {
                 item.style.display = 'flex';
             }
         });
     }
+}
+
+function searchQuestion() { // search the questions
+    const searchText = document.querySelector('.searchField').value;
+    let questions = document.querySelector('.body').querySelectorAll('span');
+    if (!questions) return;
+    let h1, p;
+    questions.forEach((item) => {
+        h1 = item.querySelector('h1').innerText;
+        p = item.querySelector('p').innerText;
+        if (h1.includes(searchText) || p.includes(searchText)) {
+            item.style.display = 'flex';
+            item.querySelector('h1').innerHTML = h1.replace(new RegExp(searchText, 'gi'), `<mark>${searchText}</mark>`);
+            item.querySelector('p').innerHTML = p.replace(new RegExp(searchText, 'gi'), `<mark>${searchText}</mark>`);
+        }
+        else if (searchText === "") {
+            item.style.display = 'none';
+            item.querySelector('h1').innerHTML = h1.replace(`<mark>${searchText}</mark>`, searchText);
+            item.querySelector('p').innerHTML = p.replace(`<mark>${searchText}</mark>`, searchText);
+        }
+        else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+function addQuestion(item) { // append new question
+    let quesBody = document.querySelector('.body');
+    if (!quesBody) return;
+    let span = document.createElement('span');
+    let h1 = document.createElement('h1');
+    let p = document.createElement('p');
+    let img = document.createElement('p');
+    let time = document.createElement('p');
+    time.style.fontSize = "1.4vmax";
+    time.style.width = '15vmax';
+    h1.innerText = item.subject;
+    p.innerText = item.question;
+    img.innerText = favIcon[item.favourite ? 1 : 0];
+    // img.style.width = '4vmax';
+    img.id = "favIcon";
+    span.setAttribute('data-id', item.id);
+    span.append(h1);
+    span.append(p);
+    span.append(img);
+    span.append(time); // day2
+    quesBody.append(span);
+    timer();
+}
+
+function timer() {
+    let span = document.querySelector('.body').querySelectorAll('span');
+    timerFlag = setInterval(() => {
+        span.forEach((item) => {
+            let allTime = getTime(Number(item.getAttribute('data-id')));
+            let result = 0;
+            // if (allTime.year) result = `${allTime.year} year`;
+            // else if (allTime.month) result = `${allTime.month} month`;
+            // else if (allTime.week) result = `${allTime.week} week`;
+            if (allTime.day) {
+                result = `${('0' + allTime.day).slice(-2)} day ${('0' + allTime.hour).slice(-2)} hh`;;
+            }
+            else if (allTime.hour) {
+                result = `${('0' + allTime.hour).slice(-2)} hh ${('0' + allTime.minute).slice(-2)} min`;
+            } else if (allTime.minute) {
+                result = `${('0' + allTime.minute).slice(-2)} min ${('0' + allTime.second).slice(-2)} sec`;
+            } else if (allTime.second) {
+                result = `${('0' + allTime.second).slice(-2)} sec`;
+            }
+            item.querySelectorAll('p')[2].innerText = `${result}'s ago`;
+        });
+    }, 1000);
+}
+
+function getTime(id) {
+    let diffTime = Date.now() - id;
+    let allTime = {
+        'second': parseInt(diffTime / 1000),
+        'minute': parseInt(diffTime / (1000 * 60)),
+        'hour': parseInt(diffTime / (1000 * 60 * 60)),
+        'day': parseInt(diffTime / (1000 * 60 * 60 * 24)),
+        // 'week': parseInt(diffTime / (1000 * 60 * 60 * 24 * 7)),
+        // 'month': parseInt(diffTime / (1000 * 60 * 60 * 24 * 30)),
+        // 'year': parseInt(diffTime / (1000 * 60 * 60 * 24 * 365)),
+    }
+    if (allTime.second > 60) allTime.second = allTime.second % 60;
+    if (allTime.minute > 60) allTime.minute = allTime.minute % 60;
+    if (allTime.hour > 60) allTime.hour = allTime.hour % 60;
+    if (allTime.day > 60) allTime.day = allTime.day % 24;
+    // if (allTime.week > 7) allTime.week = allTime.week % 7;
+    // if (allTime.month > 30) allTime.month = allTime.month % 30;
+    // if (allTime.year > 365) allTime.year = allTime.year % 365;
+    return allTime;
 }
 
 function resolve(spanID) { // remove from array
@@ -330,97 +423,4 @@ function incDislike(index, span) { // increase dislike
             popularResp(index);
         }
     });
-}
-
-function searchQuestion() { // search the questions
-    const searchText = document.querySelector('.searchField').value;
-    let questions = document.querySelector('.body').querySelectorAll('span');
-    if (!questions) return;
-    let h1, p;
-    questions.forEach((item) => {
-        h1 = item.querySelector('h1').innerText;
-        p = item.querySelector('p').innerText;
-        if (h1.includes(searchText) || p.includes(searchText)) {
-            item.style.display = 'flex';
-            item.querySelector('h1').innerHTML = h1.replace(new RegExp(searchText, 'gi'), `<mark>${searchText}</mark>`);
-            item.querySelector('p').innerHTML = p.replace(new RegExp(searchText, 'gi'), `<mark>${searchText}</mark>`);
-        }
-        else if (searchText === "") {
-            item.style.display = 'none';
-            item.querySelector('h1').innerHTML = h1.replace(`<mark>${searchText}</mark>`, searchText);
-            item.querySelector('p').innerHTML = p.replace(`<mark>${searchText}</mark>`, searchText);
-        }
-        else {
-            item.style.display = 'none';
-        }
-    });
-}
-
-function addQuestion(item) { // append new question
-    let quesBody = document.querySelector('.body');
-    if (!quesBody) return;
-    let span = document.createElement('span');
-    let h1 = document.createElement('h1');
-    let p = document.createElement('p');
-    let img = document.createElement('img');
-    let time = document.createElement('p');
-    time.style.fontSize = "1.4vmax";
-    time.style.width = '15vmax';
-    h1.innerText = item.subject;
-    p.innerText = item.question;
-    img.src = imgSrc[item.favourite ? 1 : 0];
-    img.style.width = '4vmax';
-    img.id = "favIcon";
-    span.setAttribute('data-id', item.id);
-    span.append(h1);
-    span.append(p);
-    span.append(img);
-    span.append(time); // day2
-    quesBody.append(span);
-    timer();
-}
-
-function timer() {
-    let span = document.querySelector('.body').querySelectorAll('span');
-    timerFlag = setInterval(() => {
-        span.forEach((item) => {
-            let allTime = getTime(Number(item.getAttribute('data-id')));
-            let result = 0;
-            // if (allTime.year) result = `${allTime.year} year`;
-            // else if (allTime.month) result = `${allTime.month} month`;
-            // else if (allTime.week) result = `${allTime.week} week`;
-            if (allTime.day) {
-                result = `${('0' + allTime.day).slice(-2)} day ${('0' + allTime.hour).slice(-2)} hh`;;
-            }
-            else if (allTime.hour) {
-                result = `${('0' + allTime.hour).slice(-2)} hh ${('0' + allTime.minute).slice(-2)} min`;
-            } else if (allTime.minute) {
-                result = `${('0' + allTime.minute).slice(-2)} min ${('0' + allTime.second).slice(-2)} sec`;
-            } else if (allTime.second) {
-                result = `${('0' + allTime.second).slice(-2)} sec`;
-            }
-            item.querySelectorAll('p')[1].innerText = `${result}'s ago`;
-        });
-    }, 1000);
-}
-
-function getTime(id) {
-    let diffTime = Date.now() - id;
-    let allTime = {
-        'second': parseInt(diffTime / 1000),
-        'minute': parseInt(diffTime / (1000 * 60)),
-        'hour': parseInt(diffTime / (1000 * 60 * 60)),
-        'day': parseInt(diffTime / (1000 * 60 * 60 * 24)),
-        // 'week': parseInt(diffTime / (1000 * 60 * 60 * 24 * 7)),
-        // 'month': parseInt(diffTime / (1000 * 60 * 60 * 24 * 30)),
-        // 'year': parseInt(diffTime / (1000 * 60 * 60 * 24 * 365)),
-    }
-    if (allTime.second > 60) allTime.second = allTime.second % 60;
-    if (allTime.minute > 60) allTime.minute = allTime.minute % 60;
-    if (allTime.hour > 60) allTime.hour = allTime.hour % 60;
-    if (allTime.day > 60) allTime.day = allTime.day % 24;
-    // if (allTime.week > 7) allTime.week = allTime.week % 7;
-    // if (allTime.month > 30) allTime.month = allTime.month % 30;
-    // if (allTime.year > 365) allTime.year = allTime.year % 365;
-    return allTime;
 }
