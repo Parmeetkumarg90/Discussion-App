@@ -55,20 +55,20 @@ document.querySelector('.allResponse').addEventListener('click', (event) => {   
     let ques = document.querySelector('.displayQues');
     let spanID = Number(ques.getAttribute('data-id'));
     // console.log(ques);
-    
+
     // let h1 = ques.querySelector('h1').innerText;
     // let p = ques.querySelector('p').innerText;
     let resIndex;
-    AllData.forEach((item,index) => {
+    AllData.forEach((item, index) => {
         // console.log(item.id," matching question ",spanID);
         if (item.id === spanID) {
-            resIndex = index;       
+            resIndex = index;
             // console.log("question index = ",resIndex)
         }
     });
 
     // if(!resIndex) return;
-    
+
     if (event.target.id === 'like') {
         incLike(resIndex, event.target.closest('span'));
     }
@@ -101,7 +101,7 @@ document.querySelector('.body').addEventListener('click', (event) => { // any qu
     // event.target.parentNode.remove();
     AllData.find((item, index) => {
         if (item.id === spanID) {
-            showResponse(index,spanID);
+            showResponse(index, spanID);
             return;
         }
     });
@@ -167,13 +167,13 @@ function storeQuestion() { // store new question in array
     }
 }
 
-function showResponse(index,spanID) { // display add responses
+function showResponse(index, spanID) { // display add responses
     document.querySelector('.ques').style.display = 'none';
     document.querySelector('.response').style.display = 'flex';
     let displayQues = document.querySelector('.displayQues');
     displayQues.querySelector('h1').innerText = AllData[index].subject;
     displayQues.querySelector('p').innerText = AllData[index].question;
-    displayQues.setAttribute('data-id',spanID);
+    displayQues.setAttribute('data-id', spanID);
     let allResponse = document.querySelector('.allResponse');
     allResponse.innerHTML = "";
     popularResp(index); // sort the responses
@@ -188,31 +188,10 @@ function popularResp(index) {
     AllData[index].response = AllData[index].response.sort((a, b) => (b.like - b.dislike) - (a.like - a.dislike));
 }
 
-function addQuestion(item) { // append new question
-    let quesBody = document.querySelector('.body');
-    let span = document.createElement('span');
-    let h1 = document.createElement('h1');
-    let p = document.createElement('p');
-    let img = document.createElement('img');
-    h1.innerText = item.subject;
-    p.innerText = item.question;
-    // p.style.height = "5vmax";
-    img.src = imgSrc[item.favourite ? 1 : 0];
-    img.style.width = '4vmax';
-    img.id = "favIcon";
-    span.setAttribute('data-id',item.id);
-    // span.style.height = "5vmax";
-    // p.style.overflowY = "hidden";
-    span.append(h1);
-    span.append(p);
-    span.append(img);
-    quesBody.append(span);
-}
-
 function addResponse(obj) { // append new response
     let allResponse = document.querySelector('.allResponse');
     let span = document.createElement('span');
-    span.setAttribute('data-id',obj.id);
+    span.setAttribute('data-id', obj.id);
     span.style.width = '100%';
     span.style.display = "flex";
     span.style.flexDirection = "row";
@@ -294,10 +273,10 @@ function showFavQuestion() {
 
 function resolve(spanID) { // remove from array
     let questions = document.querySelector('.body').querySelectorAll('span');
-    questions.forEach(item=>{
-        if(item.getAttribute('data-id') === spanID){
+    questions.forEach(item => {
+        if (item.getAttribute('data-id') === spanID) {
             item.remove();
-        }    
+        }
     });
 
     AllData = AllData.filter((item) => item.id !== spanID);
@@ -310,10 +289,10 @@ function incLike(index, span) {  // increase like
     if (!span) return;
     let spanID = Number(span.getAttribute('data-id'));
     // console.log(index);
-    AllData[index].response.forEach(item => {        
+    AllData[index].response.forEach(item => {
         if (item.id === spanID) {
             item.like += 1;
-            showResponse(index,AllData[index].id);
+            showResponse(index, AllData[index].id);
         }
     });
 }
@@ -324,7 +303,7 @@ function incDislike(index, span) { // increase dislike
     AllData[index].response.forEach(item => {
         if (item.id === spanID) {
             item.dislike += 1;
-            showResponse(index,AllData[index].id);
+            showResponse(index, AllData[index].id);
         }
     });
 }
@@ -350,4 +329,70 @@ function searchQuestion() { // search the questions
             item.style.display = 'none';
         }
     });
+}
+
+
+function addQuestion(item) { // append new question
+    let quesBody = document.querySelector('.body');
+    let span = document.createElement('span');
+    let h1 = document.createElement('h1');
+    let p = document.createElement('p');
+    let img = document.createElement('img');
+
+    //day 2
+    let time = document.createElement('p');
+    time.style.fontSize = "1.4vmax";
+    time.style.width = '15vmax';
+
+    h1.innerText = item.subject;
+    p.innerText = item.question;
+    img.src = imgSrc[item.favourite ? 1 : 0];
+    img.style.width = '4vmax';
+    img.id = "favIcon";
+    span.setAttribute('data-id', item.id);
+    span.append(h1);
+    span.append(p);
+    span.append(img);
+    span.append(time); // day2
+    quesBody.append(span);
+    setInterval(() => {
+        let allTime = getTime(item.id);
+        let result = 0;
+        // if (allTime.year) result = `${allTime.year} year`;
+        // else if (allTime.month) result = `${allTime.month} month`;
+        // else if (allTime.week) result = `${allTime.week} week`;
+        // else if (allTime.day) result = `${allTime.day} day`;
+        if (allTime.hour) {
+            result = `${('0' + allTime.hour).slice(-2)} hh ${('0' + allTime.minute).slice(-2)} min`;
+        } else if (allTime.minute) {
+            result = `${('0' + allTime.minute).slice(-2)} min ${('0' + allTime.second).slice(-2)} sec`;
+        } else if (allTime.second) {
+            result = `${('0' + allTime.second).slice(-2)} sec`;
+        }
+
+        time.innerText = `${result}'s ago`;
+    }, 1000);
+}
+//day2
+
+function getTime(id) {
+    let diffTime = Date.now() - id;
+    let allTime = {
+        'second': parseInt(diffTime / 1000),
+        'minute': parseInt(diffTime / (1000 * 60)),
+        'hour': parseInt(diffTime / (1000 * 60 * 60)),
+        // 'day': parseInt(diffTime / (1000 * 60 * 60 * 24)),
+        // 'week': parseInt(diffTime / (1000 * 60 * 60 * 24 * 7)),
+        // 'month': parseInt(diffTime / (1000 * 60 * 60 * 24 * 30)),
+        // 'year': parseInt(diffTime / (1000 * 60 * 60 * 24 * 365)),
+    }
+    if (allTime.second > 60) allTime.second = allTime.second % 60;
+    if (allTime.minute > 60) allTime.minute = allTime.minute % 60;
+    if (allTime.hour > 60) allTime.hour = allTime.hour % 60;
+    // if (allTime.day > 60) allTime.day = allTime.day % 24;
+    // if (allTime.week > 7) allTime.week = allTime.week % 7;
+    // if (allTime.month > 30) allTime.month = allTime.month % 30;
+    // if (allTime.year > 365) allTime.year = allTime.year % 365;
+
+    return allTime;
 }
